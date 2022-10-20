@@ -3,18 +3,20 @@
 Contains the class DBStorage
 """
 
+from os import getenv
+
+import sqlalchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+
 import models
 from models.amenity import Amenity
-from models.base_model import BaseModel, Base
+from models.base_model import Base, BaseModel
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-from os import getenv
-import sqlalchemy
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {"Amenity": Amenity, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -39,6 +41,23 @@ class DBStorage:
                                              HBNB_MYSQL_DB))
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
+
+    def get(self, cls, id):
+        """retrieve object with specified id"""
+        if cls is None or id is None:
+            return None
+
+        return self.__session.query(cls).filter_by(id=id).first()
+
+    def count(self, cls=None):
+        """Count the number of objects in storage"""
+        if cls is None:
+            count = 0
+            for clss in classes.values():
+                count += len(self.__session.query(clss).all())
+            return count
+        else:
+            return len(self.__session.query(cls).all())
 
     def all(self, cls=None):
         """query on the current database session"""
