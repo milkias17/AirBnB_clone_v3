@@ -25,5 +25,5 @@ def not_found(e):
 
 if __name__ == "__main__":
     HOST = getenv("HBNB_API_HOST") or "0.0.0.0"
-    PORT = int(getenv("HBNB_API_PORT")) or 5000
-    app.run(HOST, PORT, threaded=True)
+    PORT = getenv("HBNB_API_PORT") or 5000
+    app.run(HOST, int(PORT), threaded=True)
