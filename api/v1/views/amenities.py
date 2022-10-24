@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Module with api routes for all City object functionality"""
+"""Module with api routes for all Amenity object functionality"""
 
 from flask import abort, jsonify, make_response, request
 
